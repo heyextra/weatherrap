@@ -1,23 +1,118 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
+
+
+
+
+
+const api = { 
+  key: "36d482a7a9c845e73c6ca8ab30a7eae0",
+  base: "https://api.openweathermap.org/data/2.5/"
+}
+
+const apiRap = {
+  base: "https://public.opendatasoft.com/api/records/1.0/search/?dataset=rapworld&q=",
+  end: "&facet=location_city&facet=location_neighborhood&facet=name&refine.categories=rapper"
+}
 function App() {
+
+  const [query, setQuery] = useState('');
+  const [weather, setWeather] = useState({});
+  const [rapper, setRapper] = useState({});
+ 
+
+
+  const search = evt => {
+    if (evt.key === "Enter") {
+      fetch(`${api.base}weather?q=${query}&units=imperial&APPID=${api.key}`)
+        .then(res => res.json())
+        .then(result => {
+          setWeather(result);
+          setQuery('');
+         
+        })
+      fetch(`${apiRap.base}${query}${apiRap.end}`)
+      .then(result2 => result2.json())
+      .then(data => {
+        setRapper(data);
+        
+      })
+     }
+  }
+  
+  // const rapperMatch = evt => {
+  //   if (evt.key === "Enter"){
+  //     const city = query.replaceAll("\\s", "-");
+  //   const response = fetch(`${apiRap.base}${city}${apiRap.end}`)
+  //     .then(result => result.json())
+  //     .then(data => {
+  //       setRapper(data);
+  //       console.log(data);
+  //     })
+  // }}
+
+  const dateBuilder = (d) => {
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+    let day = days[d.getDay()];
+    let date = d.getDate();
+    let month = months [d.getMonth()];
+    let year = d.getFullYear();
+
+    return `${day} ${date} ${month} ${year}`
+  }
+
+const a = (max) => {
+  const min = 0;
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max-min) + min);
+}
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={(typeof weather.main != "undefined")
+    ? ((weather.main.temp < 50) ? 'app cold' : 'app') : 'app'}>
+     <main>
+       <div className="search-box">
+         <input 
+         type="text"
+        className="search-bar"
+        placeholder="Search..."
+        onChange={e => setQuery(e.target.value)}
+        value={query}
+        onKeyPress={search}
+        
+        />
+       </div>
+       {(typeof weather.main != "undefined" ?(
+         <div>
+       <div className="location-box">
+         <div className="location">{weather.name}, {weather.sys.country}</div>
+         <div className="date">{dateBuilder(new Date())}</div> 
+       </div>
+       <div className="weather-box">
+         <div className="weather">{weather.weather[0].main}</div>
+          <div className="temperature">
+           {Math.round(weather.main.temp)}°f
+          </div>
+       </div>
+       </div>
+       ) : (''))}
+       {(typeof rapper.records != "undefined" ?(
+         <div>
+       <div className="rapper-box">
+         <div className="rapper">
+            {rapper.records[0].fields.name} 
+         </div>
+          <div className="neighborhood">
+          {rapper.records[0].fields.location_neighborhood} 
+          </div>
+       </div>
+       </div>
+       ) : (''))}
+
+     </main>
     </div>
   );
 }
