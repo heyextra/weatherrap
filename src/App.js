@@ -12,7 +12,7 @@ const api = {
 
 const apiRap = {
   base: "https://public.opendatasoft.com/api/records/1.0/search/?dataset=rapworld&q=",
-  end: "&facet=location_city&facet=location_neighborhood&facet=name&refine.categories=rapper"
+  end: "&facet=location_city&facet=location_neighborhood&facet=name&refine.location_city="
 }
 function App() {
 
@@ -31,15 +31,16 @@ function App() {
           setQuery('');
          
         })
-      fetch(`${apiRap.base}${query}${apiRap.end}`)
+      fetch(`${apiRap.base}${query}`)
       .then(result2 => result2.json())
       .then(data => {
         setRapper(data);
         
       })
      }
+     console.log(rapper)
   }
-  
+ 
   // const rapperMatch = evt => {
   //   if (evt.key === "Enter"){
   //     const city = query.replaceAll("\\s", "-");
@@ -103,11 +104,11 @@ const a = (max) => {
          <div>
        <div className="rapper-box">
          <div className="rapper">
-            {rapper.records[0].fields.name} 
+         {(typeof rapper.records[0] != "undefined") ?( rapper.records[0].fields.name ) : ('Yall dont have any rappers fam.')} 
          </div>
           <div className="neighborhood">
-          {rapper.records[0].fields.location_neighborhood} 
-          </div>
+          {(typeof rapper.records[0] != "undefined") ?( rapper.records[0].fields.location_neighborhood ) : ('')} 
+           </div>
        </div>
        </div>
        ) : (''))}
