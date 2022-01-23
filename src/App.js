@@ -19,6 +19,13 @@ function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
   const [rapper, setRapper] = useState({});
+  const [randomRapper, setRandomRapper] = useState(0)
+  
+  const a = (max) => {
+    const min = 0;
+    return Math.floor(Math.random() * (max-min) + min)
+    
+  }
  
 
 
@@ -35,10 +42,11 @@ function App() {
       .then(result2 => result2.json())
       .then(data => {
         setRapper(data);
-        
+        setQuery('')
       })
+      setRandomRapper(a(rapper.records.length))
      }
-     console.log(rapper)
+   
   }
  
   // const rapperMatch = evt => {
@@ -64,11 +72,6 @@ function App() {
     return `${day} ${date} ${month} ${year}`
   }
 
-const a = (max) => {
-  const min = 0;
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max-min) + min);
-}
 
 
   return (
@@ -104,10 +107,10 @@ const a = (max) => {
          <div>
        <div className="rapper-box">
          <div className="rapper">
-         {(typeof rapper.records[0] != "undefined") ?( rapper.records[0].fields.name ) : ('Yall dont have any rappers fam.')} 
+         {(typeof rapper.records[0] != "undefined") ?( rapper.records[randomRapper].fields.name ) : ('Yall dont have any rappers')} 
          </div>
           <div className="neighborhood">
-          {(typeof rapper.records[0] != "undefined") ?( rapper.records[0].fields.location_neighborhood ) : ('')} 
+          {(typeof rapper.records[0] != "undefined") ?( rapper.records[randomRapper].fields.location_neighborhood ) : ('')} 
            </div>
        </div>
        </div>
