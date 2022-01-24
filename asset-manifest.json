@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/weatherrap/static/css/main.0789b19a.css",
+    "main.js": "/weatherrap/static/js/main.ba309439.js",
+    "static/js/787.08bbc9d9.chunk.js": "/weatherrap/static/js/787.08bbc9d9.chunk.js",
+    "index.html": "/weatherrap/index.html",
+    "main.0789b19a.css.map": "/weatherrap/static/css/main.0789b19a.css.map",
+    "main.ba309439.js.map": "/weatherrap/static/js/main.ba309439.js.map",
+    "787.08bbc9d9.chunk.js.map": "/weatherrap/static/js/787.08bbc9d9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0789b19a.css",
+    "static/js/main.ba309439.js"
+  ]
+}
